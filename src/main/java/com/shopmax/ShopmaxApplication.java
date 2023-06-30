@@ -8,6 +8,7 @@ public class ShopmaxApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ShopmaxApplication.class, args);
+		//6/3일(월) .requestMatchers("/favicon.ico","/error").permitAll() 추가
 	}
 
 }

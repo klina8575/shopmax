@@ -22,6 +22,7 @@ public class SecurityConfig {
 				//모든 사용자가 로그인(인증) 없이 접근할 수 있도록 설정
 				.requestMatchers("/css/**", "/js/**", "/img/**", "/images/**", "/fonts/**").permitAll()
 				.requestMatchers("/", "/members/**", "/item/**").permitAll()
+				.requestMatchers("/favicon.ico", "/error").permitAll()
 				//'admin'으로 시작하는 경로는 관리자만 접근가능하도록 설정
 				.requestMatchers("/admin/**").hasRole("ADMIN")
 				//그 외의 페이지는 모두 로그인(인증을 받아야 한다)
@@ -32,12 +33,10 @@ public class SecurityConfig {
 				.defaultSuccessUrl("/") //로그인 성공시 이동할 페이지
 				.usernameParameter("email") //로그인시 id로 사용할 파라메터 이름
 				.failureUrl("/members/login/error") //로그인 실패시 이동할 URL
-				.permitAll()
 				) 
 		.logout(logout -> logout //3. 로그아웃에 관련된 설정
 				.logoutRequestMatcher(new AntPathRequestMatcher("/members/logout")) //로그아웃시 이동할 URL
 				.logoutSuccessUrl("/") //로그아웃 성공시 이동할 URL
-				.permitAll()
 				)   //4.인증되지 않은 사용자가 리소스에 접근했을때 설정(ex. 로그인 안했는데 cart페이지에 접근..)
 		.exceptionHandling(handling -> handling
 				.authenticationEntryPoint(new CustomAuthenticationEntryPoint())
