@@ -5,6 +5,9 @@
 
 <th:block layout:fragment="css">
 	<style>
+	 .error {
+	 	color: #bd2130;
+	 }
 	</style>
 </th:block>
 
@@ -63,8 +66,47 @@
 </div>
 
 <th:block layout:fragment="script">
+	<script type="text/javascript" th:src="@{/js/cookie.js}"></script>
 	<script th:inline="javascript">
+		$(document).ready(function(){
+			var userInputId = getCookie("userInputId"); //쿠키값(이메일주소)을 가져온다.
+			var setCookieYN = getCookie("setCookieYN"); //쿠키값(이메일 저장 여부)을 가져온다.
+			
+			if(setCookieYN == 'Y') { //이메일 저장 여부가 Y면
+				$("#id_save").prop("checked", true); //이메일 저장 체크박스를 체크한다
+				$("#email").val(userInputId); //이메일 input창에는 쿠키에서 가져온 이메일 주소를 넣는다.
+			} else {
+				$("#id_save").prop("checked", false);
+			}
+			
+			
+			//로그인 버튼 클릭시 쿠키에 이메일 저장여부, 이메일 저장
+			$("#loginbtn").click(function(){
+				
+				if($("#id_save").is(":checked")) { //이메일 저장에 체크가 되어있다면
+					var userInputId = $("#email").val(); //이메일 값을 가지고 온다.
+					
+					//쿠키 생성
+					setCookie("userInputId", userInputId, 60); //이메일 저장
+					setCookie("setCookieYN", "Y", 60); //이메일 저장여부 저장
+				} else {
+					//쿠키 삭제
+					deleteCookie("userInputId");
+					deleteCookie("setCookieYN");
+				}
+				
+			});
+		});
 	</script>
 </th:block>
 
 </html>
+
+
+
+
+
+
+
+
+
