@@ -78,6 +78,30 @@ public class ItemService {
 		
 		return itemFormDto;
 	}
+	
+	
+	public Long updateItem(ItemFormDto itemFormDto, 
+			List<MultipartFile> itemImgFileList) throws Exception {
+		
+		//1. item 엔티티 가져와서 바꾼다.
+		Item item = itemRepository.findById(itemFormDto.getId())
+				         .orElseThrow(EntityNotFoundException::new);
+		//update쿼리문 실행
+		/* ★★★ 한번 insert를 진행하면 엔티티가 영속성 컨텍스트에 저장이 되므로 
+		그 이후에는 변경감지 기능이 동작하기 때문에 개발자는 update쿼리문을 쓰지 않고
+		엔티티 데이터만 변경해주면 된다. */
+		item.updateItem(itemFormDto);
+		
+		//2. item_img를 바꿔준다. -> 5개의 레코드 전부 변경
+		List<Long> itemImgIds = itemFormDto.getItemImgIds(); //상품 이미지 아이디 리스트 조회
+		
+		for(int i=0; i<itemImgFileList.size(); i++) {
+			itemImgService.updateItemImg(itemImgIds.get(i), itemImgFileList.get(i));
+		}
+		
+		return item.getId(); //변경한 item의 id 리턴
+		
+	}
 
 }
 

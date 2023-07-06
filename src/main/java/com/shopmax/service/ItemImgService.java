@@ -7,6 +7,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.shopmax.entity.ItemImg;
 import com.shopmax.repository.ItemImgRepository;
 
+import jakarta.persistence.EntityNotFoundException;
+
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.thymeleaf.util.StringUtils;
@@ -47,7 +49,33 @@ public class ItemImgService {
 		itemImgRepository.save(itemImg); //db에 insert
 	}
 	
-	
+	//이미지 업데이트 메소드
+	public void updateItemImg(Long itemImgId, MultipartFile itemImgFile) 
+			throws Exception {
+		if(!itemImgFile.isEmpty()) { //첨부한 이미지 파일이 있으면
+			
+			//해당 이미지를 가져오고
+			ItemImg savedItemImg = itemImgRepository.findById(itemImgId)
+					                     .orElseThrow(EntityNotFoundException::new);
+			
+			//기존 이미지 파일 C:/shop/item 폴더에서 삭제
+			if(!StringUtils.isEmpty(savedItemImg.getImgName())) {
+				fileService.deleteFile(itemImgLocation + "/" + savedItemImg.getImgName());
+			}
+			
+			//수정된 이미지 파일 C:/shop/item 에 업로드
+			String oriImgName = itemImgFile.getOriginalFilename();
+			String imgName = fileService.uploadFile(itemImgLocation, oriImgName
+					, itemImgFile.getBytes());
+			String imgUrl = "/images/item/" + imgName;
+			
+			//update쿼리문 실행
+			/* ★★★ 한번 insert를 진행하면 엔티티가 영속성 컨텍스트에 저장이 되므로 
+			그 이후에는 변경감지 기능이 동작하기 때문에 개발자는 update쿼리문을 쓰지 않고
+			엔티티 데이터만 변경해주면 된다. */
+			savedItemImg.updateItemImg(oriImgName, imgName, imgUrl);
+		}
+	}
 }
 
 
