@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -66,5 +67,32 @@ public class ItemController {
 	public String itemManage() {
 		return "/item/itemMng";
 	}
+	
+	//상품 수정페이지 보기
+	@GetMapping(value = "/admin/item/{itemId}")
+	public String itemDtl(@PathVariable("itemId") Long itemId, Model model) {
+	
+		try {
+			ItemFormDto itemFormDto = itemService.getItemDtl(itemId);
+			model.addAttribute("itemFormDto", itemFormDto);
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("errorMessage", "상품정보를 가져올때 에러가 발생했습니다.");
+			//에러발생시 비어있는 객체를 넘겨준다.
+			model.addAttribute("itemFormDto", new ItemFormDto());
+			return "item/itemForm";
+		}
+		
+		
+		return "item/itemModifyForm";
+	}
 
 }
+
+
+
+
+
+
+
+

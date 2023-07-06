@@ -7,7 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.shopmax.entity.ItemImg;
 import com.shopmax.repository.ItemImgRepository;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.thymeleaf.util.StringUtils;
 
