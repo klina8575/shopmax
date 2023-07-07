@@ -70,7 +70,6 @@ public class ItemController {
 	}
 	
 	//상품관리 페이지
-	/*
 	@GetMapping(value = { "/admin/items", "/admin/items/{page}" })
 	public String itemManage(ItemSearchDto itemSearchDto, 
 			@PathVariable("page") Optional<Integer> page, Model model) {
@@ -87,7 +86,7 @@ public class ItemController {
 		
 		return "/item/itemMng";
 	}
-	*/
+	
 	
 	//상품 수정페이지 보기
 	@GetMapping(value = "/admin/item/{itemId}")
