@@ -3,9 +3,30 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layouts/layout1}">
 
+<head>
+<meta name="_csrf" th:content="${_csrf.token}" />
+<meta name="_csrf_header" th:content="${_csrf.headerName}" />
+</head>
+
 <th:block layout:fragment="css">
 	<style>
-	</style>
+.repImgDiv {
+	margin-right: 15px;
+	margin-left: 15px;
+	height: auto;
+}
+
+.repImg {
+	height: 100px;
+	width: 100px;
+}
+
+.card {
+	height: 100%;
+	padding: 30px;
+	margin-bottom: 20px;
+}
+</style>
 </th:block>
 
 <div layout:fragment="content">
@@ -13,22 +34,72 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12 mb-0">
-					<a href="/">Home</a> <span class="mx-2 mb-0">/</span> 
-					<strong class="text-black">구매이력</strong>
+					<a href="/">Home</a> <span class="mx-2 mb-0">/</span> <strong
+						class="text-black">구매이력</strong>
 				</div>
 			</div>
 		</div>
 	</div>
-	
-	
+
+
 	<div class="site-section">
 		<div class="container">
 			<div class="row">
 				<div class="col-md-2"></div>
 				<div class="col-md-8">
 					<h2 class="h3 mb-3 text-black">구매내역</h2>
-					<div>주문목록</div>
-					<div>페이징버튼</div>
+					<div>
+						<div class="d-flex mb-3 align-self-center">
+							<th:block>
+								<h4 style="font-size: 18px;"></h4>
+							</th:block>
+							<th:block>
+								<h4 style="font-size: 18px;">주문 취소완료</h4>
+							</th:block>
+						</div>
+						<div class="card d-flex flex-row">
+							<div class="d-flex mb-3" style="width: 90%">
+								<div class="repImgDiv">
+									<img class="rounded repImg">
+								</div>
+								<div class="align-self-center w-75">
+									<span class="font-weight-bold"
+										style="font-size: 18px; color: black;"></span>
+									<div class="fs18 font-weight-light">
+										<span></span> / <span></span>
+									</div>
+								</div>
+							</div>
+							<div>
+								<th:block>
+									<button type="button" class="btn btn-outline-secondary">주문취소</button>
+								</th:block>
+								<th:block>
+									<p>
+										<button type="button" class="btn btn-primary">삭제하기</button>
+									</p>
+								</th:block>
+							</div>
+						</div>
+					</div>
+					<div>
+						<nav aria-label="...">
+							<ul class="pagination justify-content-center">
+								<li class="page-item disabled">
+									<a class="page-link">Previous</a>
+								</li>
+								<li class="page-item">
+									<a class="page-link" href="#">1</a>
+								</li>
+								<li class="page-item active" aria-current="page">
+									<a class="page-link" href="#">2</a>
+								</li>
+								<li class="page-item"><a class="page-link" href="#">3</a></li>
+								<li class="page-item"><a class="page-link" href="#">Next</a>
+								</li>
+							</ul>
+						</nav>
+					</div>
 				</div>
 				<div class="col-md-2"></div>
 			</div>
@@ -38,6 +109,7 @@
 
 <th:block layout:fragment="script">
 	<script th:inline="javascript">
+		
 	</script>
 </th:block>
 

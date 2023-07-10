@@ -2,13 +2,18 @@ package com.shopmax.controller;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -54,8 +59,17 @@ public class OrderController {
 	
 	
 	//주문내역을 보여준다
-	@GetMapping(value = "/orders")
-	public String orderHist() {
+	@GetMapping(value = {"/orders", "/orders/{page}"})
+	public String orderHist(@PathVariable("page") Optional<Integer> page,
+			Principal principal, Model model) {
+		//1. 한페이지 당 4개의 데이터를 가지고 오도록 설정
+		Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 4);
+		
+		//2. 서비스 호출
+		
+		//3. 서비스에서 가져온 값들을 view단에 model을 이용해 전송
+		
+		
 		return "order/orderHist";
 	}
 
