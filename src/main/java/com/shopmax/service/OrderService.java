@@ -11,7 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.shopmax.dto.OrderDto;
 import com.shopmax.dto.OrderHistDto;
+import com.shopmax.dto.OrderItemDto;
 import com.shopmax.entity.Item;
+import com.shopmax.entity.ItemImg;
 import com.shopmax.entity.Member;
 import com.shopmax.entity.Order;
 import com.shopmax.entity.OrderItem;
@@ -59,12 +61,30 @@ public class OrderService {
 	//주문 목록을 가져오는 서비스
 	@Transactional(readOnly = true)
 	public Page<OrderHistDto> getOrderList(String email, Pageable pageable) {
-		//1. 유저 아디이와 페이징 조건을 이용하여 주문 목록을 조회
+		//1. 유저 아이디와 페이징 조건을 이용하여 주문 목록을 조회
+		List<Order> orders = orderRepository.findOrders(email, pageable);
+		
 		//2. 유저의 주문 총 개수를 구한다
+		Long totalCount = orderRepository.countOrder(email);
+		
+		List<OrderHistDto> orderHistDtos = new ArrayList<>();
+		
 		//3. 주문 리스트를 순회하면서 구매 이력 페이지에 전달할 DTO(OrderHistDto)를 생성
-		
-		
-		return new PageImpl<>(null, pageable, 0); //4.페이지 구현 객체를 생성하여 return
+		for (Order order : orders) {
+			OrderHistDto orderHistDto = new OrderHistDto(order);
+			List<OrderItem> orderItems = order.getOrderItems();
+			
+			for (OrderItem orderItem : orderItems) {
+				//상품의 대표 이미지
+				ItemImg itemImg = itemImgRepository.findByItemIdAndRepimgYn(orderItem.getItem().getId(), "Y");
+				OrderItemDto orderItemDto = new OrderItemDto(orderItem, itemImg.getImgUrl());
+				orderHistDto.addOrderItemDto(orderItemDto);
+			}
+			
+			orderHistDtos.add(orderHistDto);
+		}
+
+		return new PageImpl<>(orderHistDtos, pageable, totalCount); //4.페이지 구현 객체를 생성하여 return
 	}
 }
 

@@ -48,33 +48,38 @@
 				<div class="col-md-2"></div>
 				<div class="col-md-8">
 					<h2 class="h3 mb-3 text-black">구매내역</h2>
-					<div>
+					<div th:each="order : ${orders.getContent()}">
 						<div class="d-flex mb-3 align-self-center">
-							<th:block>
-								<h4 style="font-size: 18px;"></h4>
+							<th:block th:if="${#strings.equals(order.orderStatus, 'ORDER')}">
+								<h4 th:text="${order.orderDate} + '주문'" style="font-size: 18px;"></h4>
 							</th:block>
-							<th:block>
+							<th:block th:unless="${#strings.equals(order.orderStatus, 'ORDER')}">
 								<h4 style="font-size: 18px;">주문 취소완료</h4>
 							</th:block>
 						</div>
 						<div class="card d-flex flex-row">
-							<div class="d-flex mb-3" style="width: 90%">
+							<div th:each="orderItem: ${order.orderItemDtoList}" 
+							class="d-flex mb-3" style="width: 90%">
 								<div class="repImgDiv">
-									<img class="rounded repImg">
+									<img th:src="${orderItem.imgUrl}"
+									     th:alt="${orderItem.itemNm}"
+									     class="rounded repImg">
 								</div>
 								<div class="align-self-center w-75">
-									<span class="font-weight-bold"
-										style="font-size: 18px; color: black;"></span>
+									<span th:text="${orderItem.itemNm}"
+									      class="font-weight-bold"
+										  style="font-size: 18px; color: black;"></span>
 									<div class="fs18 font-weight-light">
-										<span></span> / <span></span>
+										<span th:text="${#numbers.formatInteger(orderItem.orderPrice, 0, 'COMMA')}+'원'"></span> / 
+										<span th:text="${orderItem.count} + '개'"></span>
 									</div>
 								</div>
 							</div>
 							<div>
-								<th:block>
+								<th:block th:if="${#strings.equals(order.orderStatus, 'ORDER')}">
 									<button type="button" class="btn btn-outline-secondary">주문취소</button>
 								</th:block>
-								<th:block>
+								<th:block th:unless="${#strings.equals(order.orderStatus, 'ORDER')}">
 									<p>
 										<button type="button" class="btn btn-primary">삭제하기</button>
 									</p>
@@ -83,20 +88,30 @@
 						</div>
 					</div>
 					<div>
-						<nav aria-label="...">
-							<ul class="pagination justify-content-center">
-								<li class="page-item disabled">
-									<a class="page-link">Previous</a>
+					 <nav
+					  th:with="start=${(orders.number/maxPage)*maxPage + 1}
+			                 ,end=(${(orders.totalPages == 0) ? 1 : (start + (maxPage - 1) < orders.totalPages ? start + (maxPage - 1) : orders.totalPages)})"
+							aria-label="Page navigation example">
+							<ul class="pagination d-flex justify-content-center">
+							
+								<li class="page-item" th:classappend="${orders.first}?'disabled'">
+									<a class="page-link"
+									th:href="@{'/orders/' + ${orders.number - 1}}">이전</a>
 								</li>
-								<li class="page-item">
-									<a class="page-link" href="#">1</a>
+								
+								<li class="page-item"
+									th:each="page: ${#numbers.sequence(start, end)}"
+									th:classappend="${orders.number eq page-1}?'active':''">
+									<a
+									class="page-link" th:inline="text"
+									th:href="@{'/orders/' + ${page - 1}}">[[${page}]]</a>
 								</li>
-								<li class="page-item active" aria-current="page">
-									<a class="page-link" href="#">2</a>
+								
+								<li class="page-item" th:classappend="${orders.last}?'disabled'">
+									<a class="page-link"
+									th:href="@{'/orders/' + ${orders.number + 1}}">다음</a>
 								</li>
-								<li class="page-item"><a class="page-link" href="#">3</a></li>
-								<li class="page-item"><a class="page-link" href="#">Next</a>
-								</li>
+								
 							</ul>
 						</nav>
 					</div>

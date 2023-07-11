@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.shopmax.dto.OrderDto;
+import com.shopmax.dto.OrderHistDto;
 import com.shopmax.service.OrderService;
 
 import jakarta.validation.Valid;
@@ -66,9 +68,13 @@ public class OrderController {
 		Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 4);
 		
 		//2. 서비스 호출
+		Page<OrderHistDto> orderHistDtoList = 
+				orderService.getOrderList(principal.getName(), pageable);
 		
 		//3. 서비스에서 가져온 값들을 view단에 model을 이용해 전송
-		
+		model.addAttribute("orders", orderHistDtoList);
+		model.addAttribute("maxPage", 5); //하단에 보여줄 최대 페이지
+		//model.addAttribute("page", pageable.getPageNumber()); //현재페이지
 		
 		return "order/orderHist";
 	}
