@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -92,6 +93,22 @@ public class OrderController {
 		orderService.cancelOrder(orderId);
 		
 		return new ResponseEntity<Long>(orderId, HttpStatus.OK); //성공했을때
+	}
+	
+	//주문삭제
+	@DeleteMapping("/order/{orderId}/delete")
+	public @ResponseBody ResponseEntity deleteOrder(@PathVariable("orderId") Long orderId
+			, Principal principal) {
+		//1. 본인인증
+		if(!orderService.validateOrder(orderId, principal.getName())) {
+			return new ResponseEntity<String>("주문 삭제 권한이 없습니다.", 
+					HttpStatus.FORBIDDEN);
+		}
+		
+		//2.주문삭제
+		orderService.deleteOrder(orderId);
+		
+		return new ResponseEntity<Long>(orderId, HttpStatus.OK);
 	}
 
 }

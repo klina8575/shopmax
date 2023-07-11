@@ -115,6 +115,17 @@ public class OrderService {
 		//OrderStatus를 update -> entity 의 필드 값을 바꿔주면 된다.
 		order.cancelOrder();
 	}
+	
+	//주문 삭제
+	public void deleteOrder(Long orderId) {
+		//★delete하기 전에 select 를 한번 해준다
+		//->영속성 컨텍스트에 엔티티를 저장한 후 변경 감지를 하도록 하기 위해
+		Order order = orderRepository.findById(orderId)
+                .orElseThrow(EntityNotFoundException::new);
+		
+		//delete
+		orderRepository.delete(order);
+	}
 }
 
 
