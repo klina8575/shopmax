@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.shopmax.dto.ItemFormDto;
 import com.shopmax.dto.ItemImgDto;
+import com.shopmax.dto.ItemRankDto;
 import com.shopmax.dto.ItemSearchDto;
 import com.shopmax.dto.MainItemDto;
 import com.shopmax.entity.Item;
@@ -120,8 +121,10 @@ public class ItemService {
 		return mainItemPage;
 	}
 	
-	
-	
+	@Transactional(readOnly = true)
+	public List<ItemRankDto> getItemRankList() {
+		return itemRepository.getItemRankList();
+	}
 
 }
 
