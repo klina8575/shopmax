@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MemberController {
 	
-	private final MemberService memberService;
+    private final MemberService memberService;
 	private final PasswordEncoder passwordEncoder;
 	
 	//문의하기
