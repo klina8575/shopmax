@@ -42,7 +42,7 @@ public class ItemController {
 		model.addAttribute("itemSearchDto", itemSearchDto);
 		model.addAttribute("maxPage", 5);
 		
-		return "/item/itemShopList";
+		return "item/itemShopList";
 	}
 	
 	//상품 상세 페이지
@@ -57,7 +57,7 @@ public class ItemController {
 	@GetMapping(value = "/admin/item/new")
 	public String itemForm(Model model) {
 		model.addAttribute("itemFormDto", new ItemFormDto());
-		return "/item/itemForm";
+		return "item/itemForm";
 	}
 	
 	//상품, 상품이미지 등록(insert)
@@ -101,7 +101,7 @@ public class ItemController {
 		model.addAttribute("itemSearchDto", itemSearchDto);
 		model.addAttribute("maxPage", 5); //상품관리 페이지 하단에 보여줄 최대 페이지 번호
 		
-		return "/item/itemMng";
+		return "item/itemMng";
 	}
 	
 	
