@@ -9,8 +9,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
-	@Value("${uploadPath}")
-    String uploadPath;
+	//@Value("${uploadPath}")
+    String uploadPath = "/home/ubuntu/shopmax/shop";
 	
 	//String uploadPath = "file:///C:/shop/"; //업로드할 경로
 	
