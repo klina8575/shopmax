@@ -1,5 +1,6 @@
 package com.shopmax.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,7 +20,11 @@ import org.thymeleaf.util.StringUtils;
 @Transactional
 public class ItemImgService {
 	
-	private String itemImgLocation = "C:/shop/item";
+	//private String itemImgLocation = "C:/shop/item";
+	
+	@Value("${itemImgLocation}")
+	private String itemImgLocation;
+	
 	private final ItemImgRepository itemImgRepository;
 	private final FileService fileService;
 	
