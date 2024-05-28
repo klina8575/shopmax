@@ -10,9 +10,9 @@ public class JasyptConfigTest {
 
     @Test
     void stringEncryptor() {
-        String url = "jdbc:mysql://shopmax.ces5umxrrlsa.ap-northeast-2.rds.amazonaws.com:3306/shop?serverTimezone=UTC";
-        String userName = "admin";
-        String password = "moddi1316!";
+        String url = "";
+        String userName = "";
+        String password = "";
 
         System.out.println("En_url : " + jasyptEncoding(url));
         System.out.println("En_username : " + jasyptEncoding(userName));
