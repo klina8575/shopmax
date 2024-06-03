@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class JasyptConfigTest {
-    public String key = "haseo_key";
+    public String key = "";
 
     @Test
     void stringEncryptor() {
